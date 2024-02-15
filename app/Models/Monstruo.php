@@ -9,5 +9,6 @@ class Monstruo extends Model
 {
     use HasFactory;
         protected $fillable = ['nombre', 'armadura', 'vida', 'velocidad', 'reto'];
+        public $timestamps=false;
 }
 

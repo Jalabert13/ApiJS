@@ -7,20 +7,93 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Bestiario D&D</title>
     <style>
-        button{
-            color: green;
+        table button {
+            width: 50%;
         }
+
+        body {
+            background: url("https://wallpapercave.com/wp/zD18bKX.jpg");
+            background-repeat: no-repeat;
+            background-position: bottom;
+            background-size: cover;
+            height: 100vh;
+        }
+        body button:hover{
+            background-color: #888;
+        }
+        h1,
+        h2 {
+            color: red;
+            text-shadow: 5px -1px 0 #000, 3px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+
+
+
+        .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background: url("https://wallpapers.com/images/hd/d-d-7680-x-4320-background-spk8fuxcnzkk30d6.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  color: white;
+}
+.modal-content .btn{
+    background-color:crimson;
+    border: 3px solid black;
+}
+.modal-content .btn:hover{
+    background-color:#a11832;
+}
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
     </style>
 </head>
 
 <body>
     <h1 style="text-align: center;">Bestiario API</h1>
 
-    <button onclick="obtenerMonstruos()">Obtener Monstruos</button>
+    <button class="todos" id="todos">Obtener Monstruos</button>
+    <input type="text" name="buscar" id="buscar" placeholder="Busca por ID">
+    <button id="botonBuscar">Buscar</button>
     <table class="table table-dark table-striped">
-    <thead>
+        <thead>
             <tr>
-            <th>ID</th><th>Nombre</th><th>Armadura</th><th>Vida</th><th>Velocidad</th><th>Reto</th>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Armadura</th>
+                <th>Vida</th>
+                <th>Velocidad</th>
+                <th>Reto</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody id="tabla">
@@ -28,11 +101,21 @@
         </tbody>
     </table>
 
-    <h2 style="text-align: center;">Agregar Monstruo</h2>
+    <h2 style="text-align: center;display:contents;">Agregar Monstruo-</h2>
+
+
+    <button id="myBtn">Agregar</button>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
     <label for="nombre">Nombre:</label>
-    <input type="text" id="nombre" placeholder="Nombre del monstruo">
+    <input type="text" id="nombreMonstruo" placeholder="Nombre del monstruo">
     <br>
-    <label for="armadura">Armadura:</label>
+        <label for="armadura">Armadura:</label>
     <input type="number" id="armadura" placeholder="Valor de armadura">
     <br>
     <label for="vida">Vida:</label>
@@ -44,66 +127,205 @@
     <label for="reto">Reto:</label>
     <input type="number" id="reto" placeholder="Valor de reto">
     <br>
-    <button onclick="agregarMonstruo()">Agregar Monstruo</button>
+    <button type="button"  class="btn" id="agregar">Enviar</button>
+  </div>
 
-    <h2>Actualizar Monstruo</h2>
-    <label for="idActualizar">ID del Monstruo a actualizar:</label>
-    <input type="number" id="idActualizar" placeholder="ID del monstruo">
+</div>
     <br>
-    <label for="armaduraActualizar">Nueva armadura:</label>
-    <input type="number" id="armaduraActualizar" placeholder="Nuevo valor de armadura">
-    <br>
-    <label for="vidaActualizar">Nueva vida:</label>
-    <input type="number" id="vidaActualizar" placeholder="Nuevo valor de vida">
-    <br>
-    <button onclick="actualizarMonstruo()">Actualizar Monstruo</button>
+
 
     <script>
 
+        function mostrarTabla(){
+            let apiUrl = 'http://127.0.0.1:8000/api/monstruos';
 
-        function obtenerMonstruos() {
-
-            const apiUrl = 'http://127.0.0.1:8000/api/monstruos';
             // Función para realizar una petición GET a la API
 
-            fetch(apiUrl)
+          return  fetch(apiUrl ,{
+            method: 'get',
+            cache: 'no-cache',
+            headers : {
+                'content-Type':'application/json'
+            }
+          })
                 .then(response => response.json())
-                .then(data=>{
-                 let tablita = document.getElementById("tabla");
-                 tablita.innerHTML = "";
-                for(const datos of data){
+                .then(data => {
+                    let tablita = document.getElementById("tabla");
+                    tablita.innerHTML = "";
+                    for (const datos of data) {
+                        let tr = document.createElement("tr");
+                        tr.class = "table-danger";
+                        for (const key in datos) {
+                            let col = document.createElement("td");
+                            let textocol = document.createTextNode(datos[key])
+                            col.appendChild(textocol);
+                            tr.appendChild(col);
+                        }
+
+                        let editar = document.createElement("button");
+                        editar.id = "editar";
+                        editar.innerHTML = "Editar";
+                        editar.className = "btn btn-primary btn-lg";
+                        tr.appendChild(editar);
+                        let eliminar = document.createElement("button");
+                        eliminar.id = "eliminar";
+                        eliminar.innerHTML = "Eliminar";
+                        eliminar.className = "btn btn-primary btn-lg";
+                        tr.appendChild(eliminar);
+                        tablita.appendChild(tr);
+                    }
+                })
+                .catch(error => console.error('Error al obtener monstruos:', error));
+        }
+        document.getElementById('todos').addEventListener('click', () => {
+            mostrarTabla();
+        });
+
+        document.getElementById('botonBuscar').addEventListener('click', () => {
+            let id = document.getElementById('buscar').value;
+            let apiUrl = 'http://127.0.0.1:8000/api/monstruo/' + id;
+
+
+
+            return  fetch(apiUrl ,{
+            method: 'get',
+            cache: 'no-cache',
+            headers : {
+                'content-Type':'application/json'
+            }
+          })
+                .then(response => response.json())
+                .then(data => {
+                    let tablita = document.getElementById("tabla");
+                    tablita.innerHTML = "";
+
                     let tr = document.createElement("tr");
-                    tr.class = "table-danger";
-                    for (const key in datos) {
+                    for (const key in data) {
+
                         let col = document.createElement("td");
-                        let textocol=document.createTextNode(datos[key])
+                        let textocol = document.createTextNode(data[key])
                         col.appendChild(textocol);
                         tr.appendChild(col);
                     }
-                    let elemetons = document.createElement("th");
-                    elementos.innerHTML = "Acciones";
-                    tablita.appendChild(elementos);
+
                     let editar = document.createElement("button");
                     editar.id = "editar";
-                    editar.innerHTML ="Editar";
+                    editar.innerHTML = "Editar";
+                    editar.className = "btn btn-primary btn-lg";
                     tr.appendChild(editar);
                     let eliminar = document.createElement("button");
                     eliminar.id = "eliminar";
-                    eliminar.innerHTML ="eliminar";
+                    eliminar.innerHTML = "Eliminar";
+                    eliminar.className = "btn btn-primary btn-lg";
                     tr.appendChild(eliminar);
                     tablita.appendChild(tr);
-               }
-            })
-                .catch(error => console.error('Error al obtener monstruos:', error));
+
+                })
+                .catch(error => console.error('Error al obtener monstruo con id:'+id, error));
+        });
+
+        // document.getElementById('eliminar').addEventListener('click', () => {
+        //     let id = document.getElementById('buscar').value;
+        //     let apiUrl = 'http://127.0.0.1:8000/api/monstruo/' + id;
+
+
+
+        //     return  fetch(apiUrl ,{
+        //     method: 'get',
+        //     cache: 'no-cache',
+        //     headers : {
+        //         'content-Type':'application/json'
+        //     }
+        //   })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             let tablita = document.getElementById("tabla");
+        //             tablita.innerHTML = "";
+
+        //             let tr = document.createElement("tr");
+        //             for (const key in data) {
+
+        //                 let col = document.createElement("td");
+        //                 let textocol = document.createTextNode(data[key])
+        //                 col.appendChild(textocol);
+        //                 tr.appendChild(col);
+        //             }
+
+        //             let editar = document.createElement("button");
+        //             editar.id = "editar";
+        //             editar.innerHTML = "Editar";
+        //             editar.className = "btn btn-primary btn-lg";
+        //             tr.appendChild(editar);
+        //             let eliminar = document.createElement("button");
+        //             eliminar.id = "eliminar";
+        //             eliminar.innerHTML = "eliminar";
+        //             eliminar.className = "btn btn-primary btn-lg";
+        //             tr.appendChild(eliminar);
+        //             tablita.appendChild(tr);
+
+        //         })
+        //         .catch(error => console.error('Error al obtener monstruos:', error));
+        // });
+
+        document.getElementById('agregar').addEventListener('click', () => {
+            let apiUrl = 'http://127.0.0.1:8000/api/monstruo';
+
+            let nombre=document.getElementById('nombreMonstruo').value;
+            let armadura = document.getElementById('armadura').value;
+            let vida = document.getElementById('vida').value;
+            let velocidad = document.getElementById('velocidad').value;
+            let reto = document.getElementById('reto').value;
+            const datos = new FormData();
+	        datos.append('nombre',nombre );
+            datos.append('armadura',armadura );
+            datos.append('vida',vida );
+            datos.append('velocidad', velocidad);
+            datos.append('reto', reto);
+
+            console.log(datos);
+          fetch(apiUrl ,{
+            method: 'post',
+            body:datos,
+          })
+                .then(response => response.json())
+                .then(data => {
+                        mostrarTabla();
+                        alert("Monstruo agregado con exito");
+                        modal.style.display = "none";
+                })
+                .catch(error => console.error('Error al agregar monstruo:', error));
+        });
+
+        function append(parent, el) {
+	    return parent.appendChild(el);}
+        function createNode(element) {
+	return document.createElement(element);
+}
+
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function() {
+            modal.style.display = "block";
         }
 
-
-        function agregarMonstruo() {
-            // Implementación de la función agregarMonstruo
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
         }
 
-        function actualizarMonstruo() {
-            // Implementación de la función actualizarMonstruo
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
         }
     </script>
 </body>
