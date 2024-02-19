@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Bestiario D&D</title>
+    <title>Bert - Down With Us!</title>
     <style>
         table button {
             width: 50%;
         }
 
         body {
-            background: url("https://wallpapercave.com/wp/zD18bKX.jpg");
+            background: url("https://img.freepik.com/fotos-premium/resumen-borroso-interior-hospital-clinica-lujo-hermoso-fondo_103324-624.jpg");
             background-repeat: no-repeat;
             background-position: bottom;
             background-size: cover;
@@ -25,38 +25,25 @@
 
         h1,
         h2 {
-            color: red;
-            text-shadow: 5px -1px 0 #000, 3px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+            color: black;
         }
-
-
 
         .modal {
             display: none;
-            /* Hidden by default */
             position: fixed;
-            /* Stay in place */
             z-index: 1;
-            /* Sit on top */
             padding-top: 100px;
-            /* Location of the box */
             left: 0;
             top: 0;
             width: 100%;
-            /* Full width */
             height: 100%;
-            /* Full height */
             overflow: auto;
-            /* Enable scroll if needed */
             background-color: rgb(0, 0, 0);
-            /* Fallback color */
             background-color: rgba(0, 0, 0, 0.4);
-            /* Black w/ opacity */
         }
 
-        /* Modal Content */
         .modal-content {
-            background: url("https://wallpapers.com/images/hd/d-d-7680-x-4320-background-spk8fuxcnzkk30d6.jpg");
+            background: url("https://www.shutterstock.com/image-photo/world-down-syndrome-day-background-600nw-2128536206.jpg");
             background-repeat: no-repeat;
             background-size: cover;
             margin: auto;
@@ -75,7 +62,6 @@
             background-color: #a11832;
         }
 
-        /* The Close Button */
         .close {
             color: #aaaaaa;
             float: right;
@@ -93,9 +79,9 @@
 </head>
 
 <body>
-    <h1 style="text-align: center;">Bestiario API</h1>
+    <h1 style="text-align: center;">Bert - Clinica Discapacidad</h1>
 
-    <button class="todos" id="todos">Obtener Monstruos</button>
+    <button class="todos" id="todos">Listar Personas</button>
     <input type="text" name="buscar" id="buscar" placeholder="Busca por ID">
     <button id="botonBuscar">Buscar</button>
     <table class="table table-dark table-striped">
@@ -103,43 +89,37 @@
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Armadura</th>
-                <th>Vida</th>
-                <th>Velocidad</th>
-                <th>Reto</th>
+                <th>Tipo</th>
+                <th>Edad</th>
+                <th>Grado</th>
+                <th>Fecha</th>
                 <th>Acciones</th>
             </tr>
         </thead>
-        <tbody id="tabla">
-
-        </tbody>
+        <tbody id="tabla"></tbody>
     </table>
 
-    <h2 style="text-align: center;display:contents;">Agregar Monstruo-</h2>
+    <h2 style="text-align: center;display:contents;">Añadir Paciente-</h2>
 
+    <button id="myBtn">Añadir</button>
 
-    <button id="myBtn">Agregar</button>
-
-    <!-- The Modal -->
     <div id="myModal" class="modal">
-
-        <!-- Modal content -->
         <div class="modal-content">
             <span class="close">&times;</span>
             <label for="nombre">Nombre:</label>
-            <input type="text" id="nombreMonstruo" placeholder="Nombre del monstruo">
+            <input type="text" id="nombre" placeholder="Nombre del paciente">
             <br>
-            <label for="armadura">Armadura:</label>
-            <input type="number" id="armadura" placeholder="Valor de armadura">
+            <label for="tipo">Tipo:</label>
+            <input type="string" id="tipo" placeholder="Tipo de discapacidad">
             <br>
-            <label for="vida">Vida:</label>
-            <input type="number" id="vida" placeholder="Valor de vida">
+            <label for="edad">Edad:</label>
+            <input type="number" id="edad" placeholder="Edad del paciente">
             <br>
-            <label for="velocidad">Velocidad:</label>
-            <input type="number" id="velocidad" placeholder="Valor de velocidad">
+            <label for="grado">Grado:</label>
+            <input type="number" id="grado" placeholder="Grado de discapacidad">
             <br>
-            <label for="reto">Reto:</label>
-            <input type="number" id="reto" placeholder="Valor de reto">
+            <label for="fecha">Fecha:</label>
+            <input type="number" id="fecha" placeholder="Fecha de ingreso">
             <br>
             <button type="button" class="btn" id="agregar">Enviar</button>
         </div>
@@ -148,36 +128,32 @@
 
     <button id="editar" style="display: none;">Open Modal</button>
 
-    <!-- The Modal -->
     <div id="modalEditar" class="modal">
-
-        <!-- Modal content -->
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Editar Monstruo</h2>
+            <h2>Editar Datos Paciente</h2>
             <label for="nombre">Nombre:</label>
-            <input type="text" id="nombreActualizar" placeholder="Nombre del monstruo">
+            <input type="text" id="nombreActualizar" placeholder="Nombre del paciente">
             <br>
-            <label for="armadura">Armadura:</label>
-            <input type="number" id="armaduraActualizar" placeholder="Valor de armadura">
+            <label for="tipo">Tipo:</label>
+            <input type="number" id="tipoActualizar" placeholder="Tipo de discapacidad">
             <br>
-            <label for="vida">Vida:</label>
-            <input type="text" id="vidaActualizar" placeholder="Valor de vida">
+            <label for="edad">Edad:</label>
+            <input type="number" id="edadActualizar" placeholder="Edad del paciente">
             <br>
-            <label for="velocidad">Velocidad:</label>
-            <input type="text" id="velocidadActualizar" placeholder="Valor de velocidad">
+            <label for="grado">Grado:</label>
+            <input type="number" id="gradoActualizar" placeholder="Grado de discapacidad">
             <br>
-            <label for="reto">Reto:</label>
-            <input type="text" id="retoActualizar" placeholder="Valor de reto">
+            <label for="fecha">Fecha:</label>
+            <input type="number" id="fechaActualizar" placeholder="Fecha de ingreso">
             <br>
-            <button type="button" class="btn" id="editarMonstruo">Editar Monstruo</button>
+            <button type="button" class="btn" id="editarPersona">Editar Paciente</button>
         </div>
 
         <script>
             function mostrarTabla() {
                 let contador = 0;
-                const apiUrl = 'http://127.0.0.1:8000/api/monstruos';
-                // Función para realizar una petición GET a la API
+                const apiUrl = 'http://127.0.0.1:8000/api/personas';
 
                 fetch(apiUrl)
                     .then(response => response.json())
@@ -195,7 +171,6 @@
 
                                 col.appendChild(textocol);
                                 tr.appendChild(col);
-
                             }
                             let eliminar = document.createElement("button");
                             let editar = document.createElement("button");
@@ -212,7 +187,7 @@
                             tablita.appendChild(tr);
                         }
                     })
-                    .catch(error => console.error('Error al obtener monstruos:', error));
+                    .catch(error => console.error('Error al obtener pacientes:', error));
             }
             document.getElementById('todos').addEventListener('click', event => {
                 mostrarTabla();
@@ -220,9 +195,7 @@
 
             document.getElementById('botonBuscar').addEventListener('click', () => {
                 let id = document.getElementById('buscar').value;
-                let apiUrl = 'http://127.0.0.1:8000/api/monstruo/' + id;
-
-
+                let apiUrl = 'http://127.0.0.1:8000/api/persona/' + id;
 
                 return fetch(apiUrl, {
                         method: 'get',
@@ -258,26 +231,23 @@
                         tablita.appendChild(tr);
 
                     })
-                    .catch(error => console.error('Error al obtener monstruo con id:' + id, error));
+                    .catch(error => console.error('Error al obtener persona con id:' + id, error));
             });
 
-
-
             document.getElementById('agregar').addEventListener('click', () => {
-                let apiUrl = 'http://127.0.0.1:8000/api/monstruo';
+                let apiUrl = 'http://127.0.0.1:8000/api/persona';
 
-                let nombre = document.getElementById('nombreMonstruo').value;
-                let armadura = document.getElementById('armadura').value;
-                let vida = document.getElementById('vida').value;
-                let velocidad = document.getElementById('velocidad').value;
-                let reto = document.getElementById('reto').value;
+                let nombre = document.getElementById('nombre').value;
+                let tipo = document.getElementById('tipo').value;
+                let edad = document.getElementById('edad').value;
+                let grado = document.getElementById('grado').value;
+                let fecha = document.getElementById('fecha').value;
                 const datos = new FormData();
                 datos.append('nombre', nombre);
-                datos.append('armadura', armadura);
-                datos.append('vida', vida);
-                datos.append('velocidad', velocidad);
-                datos.append('reto', reto);
-
+                datos.append('tipo', tipo);
+                datos.append('edad', edad);
+                datos.append('grado', grado);
+                datos.append('fecha', fecha);
                 console.log(datos);
                 fetch(apiUrl, {
                         method: 'post',
@@ -287,14 +257,11 @@
                     .then(response => response.json())
                     .then(data => {
                         mostrarTabla();
-                        alert("Monstruo agregado con exito");
+                        alert("Paciente agregado con exito");
                         modal.style.display = "none";
                     })
-                    .catch(error => console.error('Error al agregar monstruo:', error));
+                    .catch(error => console.error('Error al agregar paciente:', error));
             });
-
-
-
 
             let tablita = document.getElementById("tabla");
 
@@ -304,60 +271,51 @@
                 let primeraFila = tablita.rows[valor - 1];
                 let valorDelTD = primeraFila.cells[0].textContent;
 
-                document.getElementById('editarMonstruo').addEventListener('click', () => {
-                const apiUrl = 'http://127.0.0.1:8000/api/monstruo/' + valorDelTD;
-                let nombre = document.getElementById("nombreActualizar").value;
+                document.getElementById('editarPersona').addEventListener('click', () => {
+                    const apiUrl = 'http://127.0.0.1:8000/api/persona/' + valorDelTD;
+                    let nombre = document.getElementById("nombreActualizar").value;
+                    let armadura = document.getElementById("tipoActualizar").value;
+                    let vida = document.getElementById("edadActualizar").value;
+                    let velocidad = document.getElementById("gradoActualizar").value;
+                    let reto = document.getElementById("fechaActualizar").value;
 
-                let armadura = document.getElementById("armaduraActualizar").value;
+                    const datos = new FormData();
+                    datos.append('nombre', nombre);
+                    datos.append('tipo', tipo);
+                    datos.append('edad', edad);
+                    datos.append('grado', grado);
+                    datos.append('fecha', fecha);
+                    fetch(apiUrl, {
+                            method: 'put',
+                            body: datos,
+                            cache: 'no-cache',
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert("Paciente actualizado correctamente");
+                        })
+                        .catch(error => console.error('Error al editar pacientes:', error));
+                });
 
-                let vida = document.getElementById("vidaActualizar").value;
-
-                let velocidad = document.getElementById("velocidadActualizar").value;
-
-                let reto = document.getElementById("retoActualizar").value;
-
-
-                const datos = new FormData();
-                datos.append('nombre', nombre);
-                datos.append('armadura', armadura);
-                datos.append('vida', vida);
-                datos.append('velocidad', velocidad);
-                datos.append('reto', reto);
-                fetch(apiUrl, {
-                        method: 'put',
-                        body: datos,
-                        cache: 'no-cache',
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        alert("Monstruo actualizado correctamente");
-                    })
-                    .catch(error => console.error('Error al editar monstruos:', error));
-            });
                 function mostrarModal() {
-
-                    const apiUrl = 'http://127.0.0.1:8000/api/monstruo/' + valorDelTD;
+                    const apiUrl = 'http://127.0.0.1:8000/api/persona/' + valorDelTD;
                     fetch(apiUrl)
                         .then(response => response.json())
                         .then(data => {
                             document.getElementById("nombreActualizar").value = data["nombre"];
-                            document.getElementById("armaduraActualizar").value = data["armadura"];
-                            document.getElementById("vidaActualizar").value = data["vida"];
-                            document.getElementById("velocidadActualizar").value = data["velocidad"];
-                            document.getElementById("retoActualizar").value = data["reto"];
+                            document.getElementById("tipoActualizar").value = data["tipo"];
+                            document.getElementById("edadActualizar").value = data["edad"];
+                            document.getElementById("gradoActualizar").value = data["grado"];
+                            document.getElementById("fechaActualizar").value = data["fecha"];
                             modalEditar.style.display = "block";
                         })
-                        .catch(error => console.error('Error al obtener monstruos:', error));
+                        .catch(error => console.error('Error al obtener pacientes:', error));
                 }
 
                 if (e.target.innerHTML === 'Editar') {
                     mostrarModal();
-
-
-
                 } else {
-
-                    const apiUrl = 'http://127.0.0.1:8000/api/monstruo/' + valorDelTD;
+                    const apiUrl = 'http://127.0.0.1:8000/api/persona/' + valorDelTD;
 
                     return fetch(apiUrl, {
                             method: 'delete',
@@ -366,17 +324,12 @@
                         .then(response => response.json())
                         .then(data => {
                             let nombre = data["nombre"];
-                            alert("Monstruo " + nombre + " eliminado correctamente");
+                            alert("Persona " + nombre + " eliminado correctamente");
                             mostrarTabla();
-
                         })
-                        .catch(error => console.error('Error al obtener monstruos:', error));
-
-
-
+                        .catch(error => console.error('Error al obtener Persona:', error));
                 }
             });
-
 
             function append(parent, el) {
                 return parent.appendChild(el);
@@ -386,34 +339,29 @@
                 return document.createElement(element);
             }
 
-            // Get the modal
-
             var modal = document.getElementById("myModal");
             var modalEditar = document.getElementById("modalEditar");
-
-            // Get the button that opens the modal
             var btn = document.getElementById("myBtn");
             var btnEditar = document.getElementById("editar");
-
-            // Get the <span> element that closes the modal
             var span = document.getElementsByClassName("close")[0];
             var spanEditar = document.getElementsByClassName("close")[1];
-            // When the user clicks the button, open the modal
+
             btn.onclick = function() {
                 modal.style.display = "block";
             }
+
             btnEditar.onclick = function() {
-                modal.style.display = "block";
+                modalEditar.style.display = "block";
             }
-            // When the user clicks on <span> (x), close the modal
+
             span.onclick = function() {
                 modal.style.display = "none";
             }
+
             spanEditar.onclick = function() {
                 modalEditar.style.display = "none";
             }
 
-            // When the user clicks anywhere outside of the modal, close it
             window.onclick = function(event) {
                 if (event.target == modal) {
                     modal.style.display = "none";

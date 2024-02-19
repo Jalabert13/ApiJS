@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('monstruos', function (Blueprint $table) {
+        Schema::create('personas', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->unique()->nullable(false);
-            $table->string('armadura');
-            $table->string('vida');
-            $table->string('velocidad')->nullable(true);
-            $table->string('reto');
-
+            $table->string('tipo');
+            $table->string('edad');
+            $table->string('grado')->nullable(true);
+            $table->string('fecha');
         });
     }
     /**
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('monstruos');
+        Schema::dropIfExists('personas');
     }
 };
